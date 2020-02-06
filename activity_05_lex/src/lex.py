@@ -79,16 +79,29 @@ def lex(input):
     if charClass == CharClass.EOF:
         return (input, None, None)
 
-    # TODO: read letters
+    # TODOd: read letter
+    if charClass == CharClass.LETTER:
+        input, lexeme = addChar(input, lexeme)
+        return (input, lexeme, Token.IDENTIFIER)
 
+    # TODOd: read digits
+    if charClass == CharClass.DIGIT:
+        input, lexeme = addChar(input, lexeme)
+        while True:
+            c, charClass = getChar(input)
+            if charClass == CharClass.DIGIT:
+                input, lexeme = addChar(input, lexeme)
+            else:
+                return (input, lexeme, Token.LITERAL)
 
-    # TODO: read digits
-
-
-    # TODO: read an operator
-
+    # TODOd: read an operator
+    if charClass == CharClass.OPERATOR:
+        input, lexeme = addChar(input, lexeme)
+        if lexeme in lookup:
+            return (input, lexeme, lookup[lexeme])
 
     # TODO: anything else, raise an exception
+    raise Exception("Lexical Analyzer Error: unrecognized symbol found!")
 
 # main
 if __name__ == "__main__":
