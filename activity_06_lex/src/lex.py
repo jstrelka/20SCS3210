@@ -79,10 +79,15 @@ def lex(input):
     if charClass == CharClass.EOF:
         return (input, None, None)
 
-    # TODO: read a letter followed by letters or digits
+    # TODOd: read a letter followed by letters or digits
     if charClass == CharClass.LETTER:
         input, lexeme = addChar(input, lexeme)
-        return (input, lexeme, Token.IDENTIFIER)
+        while True:
+            c, charClass = getChar(input)
+            if charClass == CharClass.LETTER or charClass == CharClass.DIGIT:
+                input, lexeme = addChar(input, lexeme)
+            else:
+                return (input, lexeme, Token.IDENTIFIER)
 
     # TODOd: read digits
     if charClass == CharClass.DIGIT:
