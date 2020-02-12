@@ -159,14 +159,20 @@ def lex(input):
         if lexeme in lookupToken:
             return (input, lexeme, lookupToken[lexeme])
 
+    # TODOd: read open/close parenthesis
+    if charClass == CharClass.DELIMITER:
+        if c == '(' or c == ')':
+            input, lexeme = addChar(input, lexeme)
+            return (input, lexeme, lookup[lexeme])
+
     # anything else, raises an error
     raise Exception(errorMessage(3))
 
 # parse
 def parse(input):
 
-    # TODO: create the parse tree
-
+    # TODOd: create the parse tree
+    tree = Tree()
 
     # call parse expression
     parseExpression(input, tree)
@@ -179,11 +185,11 @@ def parse(input):
 # <expression'> -> epsilon
 def parseExpression(input, tree):
 
-    # TODO: update the tree's root with the label <expression>
+    # TODOd: update the tree's root with the label <expression>
+    tree.data = "<expression>"
 
-
-    # TODO: call parse a term
-
+    # TODOd: call parse a term
+    input, lexeme, token = parseTerm(input, tree)
 
     # parse more terms
     while True:
@@ -202,19 +208,20 @@ def parseExpression(input, tree):
 # <term'> -> epsilon
 def parseTerm(input, tree):
 
-    # TODO: create a subtree with the label <term>
+    # TODOd: create a subtree with the label <term>
+    subTree = Tree()
+    subTree.data = "<term>"
 
+    # TODOd: attach the subtree as a child of tree
+    tree.add(subTree)
 
-    # TODO: attach the subtree as a child of tree
-
-
-    # TODO: call parse a factor
-
+    # TODOd: call parse a factor
+    input, lexeme, token = parseFactor(input, subTree)
 
     # parse more factors
     while True:
         # TODO: if current token is * or / then add the lexeme to the tree and call parse factor again
-
+        
 
         # TODO: anything different than * or / then break the loop
 
@@ -225,24 +232,27 @@ def parseTerm(input, tree):
 # <factor> -> <identifier> | <literal>
 def parseFactor(input, tree):
 
-    # TODO: create a subtree with the label <factor>
+    # TODOd: create a subtree with the label <factor>
+    subTree = Tree()
+    subTree.data = "<factor>"
 
+    # TODOd: attach the subtree as a child of tree
+    tree.add(subTree)
 
-    # TODO: attach the subtree as a child of tree
+    # TODOd: read a token
+    input, lexeme, token = lex(input)
 
+    # TODOd: if token is an identifier or literal, add the lexeme as child of subTree and read the next token
+    if token == Token.IDENTIFIER or token == Token.LITERAL:
+        subTree.add(lexeme)
+        input, lexeme, token = lex(input)
 
-    # TODO: read a token
+    # TODOd: anything different than identifier or literal, raise an exception
+    else:
+        raise Exception(errorMessage(11))
 
-
-    # TODO: if token is an identifier or literal, add the lexeme as child of subTree and read the next token
-
-
-    # TODO: anything different than identifier or literal, raise an exception
-
-
-
-    # TODO: return input, lexeme, token
-    return None
+    # TODOd: return input, lexeme, token
+    return input, lexeme, token
 
 # main
 if __name__ == "__main__":
