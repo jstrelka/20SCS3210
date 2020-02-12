@@ -59,13 +59,17 @@ class Token(Enum):
     DIV_OP     = 4
     IDENTIFIER = 5
     LITERAL    = 6
+    OPEN_PAR   = 7
+    CLOSE_PAR  = 8
 
 # lexeme to token conversion
 lookup = {
     "+"      : Token.ADD_OP,
     "-"      : Token.SUB_OP,
     "*"      : Token.MUL_OP,
-    "/"      : Token.DIV_OP
+    "/"      : Token.DIV_OP,
+    "("      : Token.OPEN_PAR,
+    ")"      : Token.CLOSE_PAR
 }
 
 # returns the next (lexeme, token) pair or None if EOF is reached
@@ -103,6 +107,12 @@ def lex(input):
     if charClass == CharClass.OPERATOR:
         input, lexeme = addChar(input, lexeme)
         if lexeme in lookup:
+            return (input, lexeme, lookup[lexeme])
+
+    # TODOd: read open/close parenthesis
+    if charClass == CharClass.OTHER:
+        if c == '(' or c == ')':
+            input, lexeme = addChar(input, lexeme)
             return (input, lexeme, lookup[lexeme])
 
     # TODOd: anything else, raise an exception
