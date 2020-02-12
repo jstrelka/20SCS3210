@@ -163,7 +163,7 @@ def lex(input):
     if charClass == CharClass.DELIMITER:
         if c == '(' or c == ')':
             input, lexeme = addChar(input, lexeme)
-            return (input, lexeme, lookup[lexeme])
+            return (input, lexeme, lookupToken[lexeme])
 
     # anything else, raises an error
     raise Exception(errorMessage(3))
@@ -193,15 +193,21 @@ def parseExpression(input, tree):
 
     # parse more terms
     while True:
-        # TODO: if current token is + or - then add the lexeme to the tree and call parse term again
+        # TODOd: if current token is + or - then add the lexeme to the tree and call parse term again
+        if token == Token.ADDITION or token == Token.SUBTRACTION:
+            tree.add(lexeme)
+            input, lexeme, token = parseTerm(input, tree)
 
+        # TODOd: check for EOF
+        elif token == Token.EOF:
+            break
 
-        # TODO: check for EOF
+        # TODOd: raise an exception
+        else:
+            raise Exception(errorMessage(6))
 
-
-        # TODO: raise an exception
-
-
+    # TODO: return the parse tree
+    return tree
 
 # <term> -> <factor> <term’>
 # <term'> -> (*|/) <factor> <term'>
@@ -220,14 +226,17 @@ def parseTerm(input, tree):
 
     # parse more factors
     while True:
-        # TODO: if current token is * or / then add the lexeme to the tree and call parse factor again
-        
+        # TODOd: if current token is * or / then add the lexeme to the tree and call parse factor again
+        if token == Token.MULTIPLICATION or token == Token.DIVISION:
+            subTree.add(lexeme)
+            input, lexeme, token = parseFactor(input, subTree)
 
-        # TODO: anything different than * or / then break the loop
+        # TODOd: anything different than * or / then break the loop
+        else:
+            break
 
-
-    # TODO: return input, lexeme, token
-    return None
+    # TODOd: return input, lexeme, token
+    return input, lexeme, token
 
 # <factor> -> <identifier> | <literal>
 def parseFactor(input, tree):
