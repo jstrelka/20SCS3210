@@ -286,12 +286,11 @@ def printGotos(gotos):
 # given an input (source program), a grammar, actions, and gotos, returns the corresponding parse tree or raise an exception if syntax errors were found
 def parse(input, grammar, actions, gotos):
 
-    # create a stack of trees
-    trees = []
+    # TODO: create a stack of trees
 
-    # initialize the stack of (state, symbol) pairs
-    stack = []
-    stack.append(0)
+
+    # TODO: initialize the stack of (state, symbol) pairs
+
 
     # initialize lexeme and token variables
     lexeme = ""
@@ -304,8 +303,8 @@ def parse(input, grammar, actions, gotos):
         if token is None:
             input, lexeme, token = lex(input)
 
-        # get current state
-        state = stack[-1]
+        # TODO: get current state
+
 
         # print debugging info
         if DEBUG:
@@ -315,8 +314,8 @@ def parse(input, grammar, actions, gotos):
             print(token,                       end = ",")
             print(" " + str(int(token)) + ")", end = " ")
 
-        # get action
-        action = actions[(state, int(token))]
+        # TODO: get action
+
 
         if DEBUG:
             print("action:",                   end = " ")
@@ -327,67 +326,55 @@ def parse(input, grammar, actions, gotos):
             errorCode = getErrorCode(state)
             raise Exception(errorMessage(errorCode))
 
-        # shift operation
-        if action[0] == 's':
+        # TODO: implement the shift operation
+        # if action[0] == 's':
 
-            # update the stack
-            stack.append(int(token))
-            state = int(action[1:])
-            stack.append(state)
+            # TODO: update the stack
 
-            # create a new tree, set data to token, and push it onto the list of trees
-            tree = Tree()
-            # tree.data = int(token)
-            tree.data = lexeme # lexemes will read better than tokens for now
-            trees.append(tree)
+
+
+            # TODO: create a new tree, set data to token, and push it onto the list of trees
+
 
             # set token to None to acknowledge reading the input
             token = None
 
-        # reduce operation
-        elif action[0] == 'r':
+        # TODO: implement the reduce operation
+        # elif action[0] == 'r':
 
-            # get production to use
-            production = grammar[int(action[1:])]
-            lhs = getLHS(production)
-            rhs = getRHS(production)
+            # TODO: get production to use
 
-            # update the stack
-            for i in range(len(rhs) * 2):
-                stack.pop()
-            state = stack[-1]
-            stack.append(lhs)
-            stack.append(int(gotos[(state, lhs)]))
 
-            # create a new tree and set data to lhs
-            newTree = Tree()
-            newTree.data = lhs
 
-            # get "len(rhs)" trees from the right of the list of trees and add each of them as child of the new tree you created, preserving the left-right order
-            for tree in trees[-len(rhs):]:
-                newTree.add(tree)
+            # TODO: update the stack
 
-            # remove "len(rhs)" trees from the right of the list of trees
-            trees = trees[:-len(rhs)]
 
-            # append the new tree to the list of trees
-            trees.append(newTree)
 
-        # "accept" operation
-        else:
+            # TODO: create a new tree and set data to lhs
 
-            # assume that the lhs of the 1st production has the start symbol
-            production = grammar[0]
-            lhs = getLHS(production)
 
-            # reduce all trees to the start symbol
-            newTree = Tree()
-            newTree.data = lhs
-            for child in trees:
-                newTree.add(child)
 
-            # return the new tree
-            return newTree
+            # TODO: get "len(rhs)" trees from the right of the list of trees and add each of them as child of the new tree you created, preserving the left-right order
+
+
+            # TODO: remove "len(rhs)" trees from the right of the list of trees
+
+
+            # TODO: append the new tree to the list of trees
+
+
+        # TODO: implement the "accept" operation
+        # else:
+
+            # TODO: set lhs as the start symbol; assume that the lhs of the 1st production has the start symbol
+
+
+
+            # TODO: reduce all trees to the start symbol
+
+
+            # TODO: return the new tree
+
 
 # main
 if __name__ == "__main__":
@@ -455,11 +442,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # parse the code
-    try:
-        tree = parse(input, grammar, actions, gotos)
-        print("Input is syntactically correct!")
-        print("Parse Tree:")
-        tree.print("")
-    except Exception as ex:
-        print(ex)
-        sys.exit(1)
+    # try:
+    #     tree = parse(input, grammar, actions, gotos)
+    #     print("Input is syntactically correct!")
+    #     print("Parse Tree:")
+    #     tree.print("")
+    # except Exception as ex:
+    #     print(ex)
+    #     sys.exit(1)
